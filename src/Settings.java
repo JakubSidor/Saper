@@ -22,7 +22,7 @@ public class Settings extends JFrame implements MyWindow {
         setBackground(Color.darkGray);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
-        setTitle("Saper - Opcje");
+        setTitle("Start");
         setResizable(false);
 
         initComponents();
@@ -38,8 +38,18 @@ public class Settings extends JFrame implements MyWindow {
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                it.dispose();
-                new Game();
+                try {
+                    new Game(
+                            Integer.parseInt(numberOfBombs.getText()),
+                            Integer.parseInt(sizeOfMap.getText())
+                    );
+                    it.dispose();
+                }
+                catch (Exception exception)
+                {
+                    System.out.println("Error:"+exception.getMessage());
+                    //new JOptionPane("Proszę o wprowadzenie poprawnych wartości w pola wielkości mapy i ilości bomb", JOptionPane.ERROR_MESSAGE).show();
+                }
             }
         });
         add(start);
