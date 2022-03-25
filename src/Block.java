@@ -8,6 +8,7 @@ public class Block extends JButton {
     private boolean bomb = false;
     private static Icon bombIcon;
     public static final int SIZE = 40;
+    public static boolean gameover = false;
 
     public Block(int posX, int posY, Game game){
 
@@ -33,10 +34,10 @@ public class Block extends JButton {
 
         showed = true;
 
-
         int bombsNear;
         if(!bomb)
         {
+            game.addToPoints(10);
             this.setEnabled(false);
             bombsNear = game.checkNearBlocks(this);
             if(bombsNear == 0)
@@ -44,11 +45,27 @@ public class Block extends JButton {
                 game.exposeNearBlocks(this);
             }
             this.setText(bombsNear > 0 ? Integer.toString(bombsNear) : "");
+
+            if(game.isWin() && !game.isGameover())
+            {
+                game.setGameover(true);
+                game.showAllBombs();
+                JOptionPane.showMessageDialog(this, "Gratulacje! Odsłoniłeś wszystkie pola bez zdetonowania bomby\nIlość zdobytych punktów: " + game.getScore(),"Wygrana!",1);
+                game.dispose();
+                game.getSettings().setVisible(true);
+            }
         }
         else
         {
             this.setIcon(bombIcon);
-            game.showAllBombs();
+
+            if(!game.isGameover()) {
+                game.setGameover(true);
+                game.showAllBombs();
+                JOptionPane.showMessageDialog(this, "Zdentonowałeś bombę!\nIlość zdobytych punktów: " + game.getScore(),"Przegrana!",1);
+                game.dispose();
+                game.getSettings().setVisible(true);
+            }
         }
     }
 
@@ -58,5 +75,9 @@ public class Block extends JButton {
 
     public void setBomb(boolean bomb) {
         this.bomb = bomb;
+    }
+
+    public boolean isShowed() {
+        return showed;
     }
 }

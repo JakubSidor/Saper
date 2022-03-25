@@ -4,29 +4,29 @@ import java.util.Random;
 
 public class Game extends JFrame implements MyWindow {
 
+    private Settings settings;
+
     private int numberOfBombs;
     private int sizeOfMap;
 
     private static final int topPanelSize = 50;
     private JTextField jtfScore;
+    private JButton menu;
     private int score;
+    private boolean gameover = false;
 
     private Block[][] blocks_arr;
 
-    public Game(int numberOfBombs, int sizeOfMap){
+    public Game(Settings settings, int numberOfBombs, int sizeOfMap){
         this.numberOfBombs = numberOfBombs;
         this.sizeOfMap = sizeOfMap;
+        this.settings = settings;
         init();
-    }
-
-    public void refresh(){
-        revalidate();
-        repaint();
     }
 
     @Override
     public void init() {
-        setSize((sizeOfMap + 1) * Block.SIZE,(sizeOfMap + 1) * Block.SIZE + topPanelSize);
+        setSize((sizeOfMap) * Block.SIZE + 14,(sizeOfMap + 1) * Block.SIZE + topPanelSize);
         setBackground(Color.darkGray);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
@@ -62,9 +62,20 @@ public class Game extends JFrame implements MyWindow {
                 block.setBomb(true);
         }
 
-        jtfScore = new JTextField("Score:"+ score);
+        jtfScore = new JTextField("Punkty:"+ score);
         jtfScore.setSize(100,20);
+        jtfScore.setLocation(20,15);
+        jtfScore.setEditable(false);
         add(jtfScore);
+
+        menu = new JButton("Menu");
+        menu.setSize(80, 20);
+        menu.setLocation(150,15);
+        menu.addActionListener(e->{
+            this.dispose();
+            settings.setVisible(true);
+        });
+        add(menu);
     }
 
     //zwraca ilość bomb dookoła
@@ -145,5 +156,36 @@ public class Game extends JFrame implements MyWindow {
                 else blocks_arr[i][j].setEnabled(false);
             }
         }
+    }
+
+    public boolean isWin(){
+        for (int i = 0; i < sizeOfMap; i++) {
+            for (int j = 0; j < sizeOfMap; j++) {
+                if(!blocks_arr[i][j].isBomb() && !blocks_arr[i][j].isShowed())
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public void addToPoints(int add){
+        score += add;
+        jtfScore.setText("Punkty:" + score);
+    }
+
+    public int getScore(){
+        return score;
+    }
+
+    public boolean isGameover() {
+        return gameover;
+    }
+
+    public void setGameover(boolean gameover) {
+        this.gameover = gameover;
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 }
