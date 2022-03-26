@@ -9,10 +9,13 @@ public class Game extends JFrame implements MyWindow {
     private int numberOfBombs;
     private int sizeOfMap;
 
-    private static final int topPanelSize = 50;
+    private static final int topPanelSize = 90;
     private JTextField jtfScore;
+    private JTextField jtfBombs;
+    private JTextField jtfTimer;
     private JButton menu;
     private int score;
+    private int numberOfIndicators = 10;
     private boolean gameover = false;
 
     private Block[][] blocks_arr;
@@ -64,13 +67,34 @@ public class Game extends JFrame implements MyWindow {
 
         jtfScore = new JTextField("Punkty:"+ score);
         jtfScore.setSize(100,20);
-        jtfScore.setLocation(20,15);
+        jtfScore.setLocation(20,10);
         jtfScore.setEditable(false);
         add(jtfScore);
 
+        jtfBombs = new JTextField("Bomby:"+ numberOfBombs);
+        jtfBombs.setSize(100,20);
+        jtfBombs.setLocation(20,35);
+        jtfBombs.setEditable(false);
+        add(jtfBombs);
+
+        jtfTimer = new JTextField("Czas:");
+        jtfTimer.setSize(100,20);
+        jtfTimer.setLocation(20,60);
+        jtfTimer.setEditable(false);
+        new Thread(() -> {
+            int timer = 0;
+            while (true && !gameover) { timer++; jtfTimer.setText("Czas: " + timer + " s.");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }}).start();
+        add(jtfTimer);
+
         menu = new JButton("Menu");
         menu.setSize(80, 20);
-        menu.setLocation(150,15);
+        menu.setLocation(150,35);
         menu.addActionListener(e->{
             this.dispose();
             settings.setVisible(true);
@@ -187,5 +211,9 @@ public class Game extends JFrame implements MyWindow {
 
     public Settings getSettings() {
         return settings;
+    }
+
+    public void useIndicator(){
+        numberOfIndicators --;
     }
 }

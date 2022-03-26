@@ -1,19 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Block extends JButton {
 
     private Game game;
     private boolean showed = false;
     private boolean bomb = false;
+    private boolean indicated = false;
     private static Icon bombIcon;
+    private static Icon indicatorIcon;
     public static final int SIZE = 40;
-    public static boolean gameover = false;
 
     public Block(int posX, int posY, Game game){
 
         if(bombIcon == null)
             bombIcon = new ImageIcon("bomb.jpg");
+
+        if(indicatorIcon == null)
+            indicatorIcon = new ImageIcon("indicator.jpg");
+
         this.game = game;
         init(posX, posY);
     }
@@ -23,9 +30,32 @@ public class Block extends JButton {
         setLocation(posX, posY);
         setFont(new Font(null,Font.BOLD,10));
 
-        this.addActionListener(e -> {
-            expose();
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON1 && !indicated)
+                {
+                    expose();
+                }
+                else if (e.getButton() == MouseEvent.BUTTON3)
+                {
+                    placeIndicator();
+                }
+            }
         });
+    }
+
+    public void placeIndicator(){
+        if(indicated) {
+            indicated = false;
+            this.setIcon(null);
+        }
+        else
+        {
+            //game.useIndicator();
+            indicated = true;
+            this.setIcon(indicatorIcon);
+        }
     }
 
     public void expose(){

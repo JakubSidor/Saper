@@ -10,6 +10,8 @@ public class Settings extends JFrame implements MyWindow {
     private JButton exit;
     private JTextField numberOfBombs;
     private JTextField sizeOfMap;
+    private JLabel numberOfBombsLabel;
+    private JLabel sizeOfMapLabel;
     private Settings it;
 
     public Settings(){
@@ -19,7 +21,7 @@ public class Settings extends JFrame implements MyWindow {
     @Override
     public void init() {
         it = this;
-        setSize(250,220);
+        setSize(330,220);
         setBackground(Color.darkGray);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
@@ -75,18 +77,31 @@ public class Settings extends JFrame implements MyWindow {
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
 
-        numberOfBombs = new JTextField("Ilość bomb");
+        numberOfBombs = new JTextField("4");
         numberOfBombs.setSize(100,20);
         numberOfBombs.setLocation(this.getWidth()/2 - numberOfBombs.getWidth()/2-8, 60);
         numberOfBombs.setBorder(border);
         numberOfBombs.setHorizontalAlignment(JTextField.CENTER);
         add(numberOfBombs);
 
-        sizeOfMap = new JTextField("Wielkość planszy");
+        numberOfBombsLabel = new JLabel("Ilość bomb:");
+        numberOfBombsLabel.setSize(110,20);
+        numberOfBombsLabel.setLocation(this.getWidth()/2 - numberOfBombsLabel.getWidth()/2-116, 60);
+        numberOfBombsLabel.setHorizontalAlignment(JTextField.RIGHT);
+        add(numberOfBombsLabel);
+
+        sizeOfMap = new JTextField("10");
         sizeOfMap.setSize(100,20);
         sizeOfMap.setLocation(this.getWidth()/2 - sizeOfMap.getWidth()/2-8, 100);
         sizeOfMap.setBorder(border);
         sizeOfMap.setHorizontalAlignment(JTextField.CENTER);
         add(sizeOfMap);
+
+        sizeOfMapLabel = new JLabel("Wielkość planszy:");
+        sizeOfMapLabel.setSize(110,20);
+        sizeOfMapLabel.setLocation(this.getWidth()/2 - sizeOfMapLabel.getWidth()/2-116, 100);
+        sizeOfMapLabel.setHorizontalAlignment(JTextField.RIGHT);
+        add(sizeOfMapLabel);
+
     }
 }
